@@ -1,0 +1,561 @@
+/* ===== GLOBAL ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(4, 102, 200, 0.16), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(151, 157, 172, 0.10), transparent 30%),
+        linear-gradient(135deg, #001233, #001845, #002855);
+    color: #f8fafc;
+}
+
+/* ===== LOGIN PAGE ===== */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 24, 69, 0.92);
+    border: 1px solid rgba(4, 102, 200, 0.22);
+    border-radius: 24px;
+    padding: 48px 36px;
+    text-align: center;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(4, 102, 200, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.login-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(4, 102, 200, 0.25));
+}
+
+.login-container h1 {
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    color: #cbd5e1;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.login-form-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.subtext {
+    color: #979DAC;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(125, 133, 151, 0.35);
+    background: #001845;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.login-input::placeholder {
+    color: #7D8597;
+}
+
+.login-input:focus {
+    border-color: #0466C8;
+    box-shadow: 0 0 0 3px rgba(4, 102, 200, 0.18);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #0466C8, #0353A4, #023E7D);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 0 20px rgba(4, 102, 200, 0.18);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(4, 102, 200, 0.28);
+}
+
+.status-text {
+    min-height: 24px;
+    margin-top: 16px;
+    color: #dbe4ee;
+    font-weight: bold;
+}
+
+.status-error {
+    color: #ffb4b4;
+}
+
+.status-success {
+    color: #b6f0c2;
+}
+
+.status-info {
+    color: #dbe4ee;
+}
+
+.login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 36px 22px;
+        border-radius: 18px;
+    }
+
+    .login-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .login-form-box h2 {
+        font-size: 1.5rem;
+    }
+
+    .login-logo {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* ===== TEAM PAGE ===== */
+
+.team-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.team-card {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(56, 189, 248, 0.16);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(56, 189, 248, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.team-header {
+    margin-bottom: 28px;
+    text-align: center;
+    border-bottom: 1px solid rgba(56,189,248,0.15);
+    padding-bottom: 20px;
+}
+
+.team-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.35));
+}
+
+.team-header h1 {
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.team-subtitle {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.team-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+}
+
+.team-info-bar p {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 1rem;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.home-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    border: 1px solid rgba(56,189,248,0.25);
+    background: rgba(15,23,42,0.8);
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.home-btn:hover {
+    background: rgba(56,189,248,0.15);
+    border-color: rgba(56,189,248,0.5);
+}
+
+.progress-section {
+    margin-bottom: 28px;
+    padding: 18px 20px;
+    background: rgba(30, 41, 59, 0.55);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    border-radius: 16px;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 14px;
+    background: #0f172a;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.28);
+    transition: width 0.35s ease;
+}
+
+.questions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.question-box {
+    background: rgba(30, 41, 59, 0.78);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 0;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.question-box h3 {
+    color: #ffffff;
+    margin-bottom: 14px;
+    font-size: 1.2rem;
+}
+
+.option-label {
+    display: block;
+    margin: 8px 0;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.option-label input {
+    margin-right: 10px;
+}
+
+.text-answer {
+    width: 100%;
+    max-width: 420px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.text-answer:focus {
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.16);
+}
+
+.question-submit-btn {
+    margin-top: 14px;
+}
+
+button {
+    background: linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6);
+    color: #ffffff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.25s ease;
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.18);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.nav-btn {
+    min-width: 130px;
+}
+
+.question-feedback {
+    margin-top: 12px;
+    font-weight: bold;
+    color: #cbd5e1;
+}
+
+/* ===== SCOREBOARD PAGE ===== */
+
+.scoreboard-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.scoreboard-card {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(56, 189, 248, 0.16);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(56, 189, 248, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.scoreboard-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.scoreboard-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.35));
+}
+
+.scoreboard-header h1 {
+    font-size: 2.3rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.scoreboard-subtitle {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.leader-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.leader-label {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.leader-team {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #22d3ee;
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.18);
+}
+
+.scoreboard-table-wrap {
+    overflow-x: auto;
+    background: rgba(30, 41, 59, 0.55);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    border-radius: 18px;
+    padding: 12px;
+}
+
+.scoreboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #e2e8f0;
+    font-size: 1rem;
+}
+
+.scoreboard-table thead th {
+    text-align: left;
+    padding: 16px 18px;
+    color: #ffffff;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.14);
+}
+
+.scoreboard-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.scoreboard-table tbody tr:hover {
+    background: rgba(56, 189, 248, 0.06);
+}
+
+.scoreboard-table tbody td {
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.scoreboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.chart-card {
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.10);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.chart-card h2 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+#scoreChart {
+    width: 100%;
+    max-height: 350px;
+}
+
+.scoreboard-table tbody td:first-child {
+    font-weight: bold;
+    color: #22d3ee;
+}
+
+.first-place {
+    background: linear-gradient(
+        90deg,
+        rgba(34, 211, 238, 0.10),
+        rgba(139, 92, 246, 0.08)
+    );
+}
+
+@media (max-width: 900px) {
+    .scoreboard-card {
+        padding: 22px;
+    }
+
+    .scoreboard-header h1 {
+        font-size: 1.9rem;
+    }
+
+    .leader-box {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+/* ===== TEAM PAGE MOBILE ===== */
+
+@media (max-width: 900px) {
+    .team-card {
+        padding: 22px;
+    }
+
+    .team-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .team-info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+    }
+
+    .nav-btn {
+        width: 100%;
+    }
+}
