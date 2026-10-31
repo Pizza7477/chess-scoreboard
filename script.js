@@ -6,31 +6,33 @@ const sessions = [
     {
         name: "Session 1",
         multiplier: 1,
-        placements: ["BTroop", "HKTroop", "KTroop", "SHQ"],
-        lichessScores: { BTroop: 52, HKTroop: 47, KTroop: 40, SHQ: 33 }
+        lichessScores: { BTroop: 52, HKTroop: 90, KTroop: 40, SHQ: 33 }
     },
 
     {
         name: "Session 2",
         multiplier: 1,
-        placements: ["SHQ", "HKTroop", "BTroop", "KTroop"],
         lichessScores: { BTroop: 40, HKTroop: 50, KTroop: 20, SHQ: 63 }
     },
 
     {
         name: "Session 3",
         multiplier: 1,
-        placements : [ "HKTroop", "KTroop", "SHQ", "BTroop"],
-        lichessScores: { BTroop: 30, HKTroop: 90, KTroop: 80, SHQ: 73 }
+        lichessScores: { BTroop: 30, HKTroop: 90, KTroop: 80, SHQ: 40 }
     },
 
    {
         name: "Session 4",
         multiplier: 1,
-        placements : ["HKTroop", "KTroop", "BTroop", "SHQ"],
-        lichessScores: { BTroop: 60, HKTroop: 80, KTroop: 70, SHQ: 30 }
+        lichessScores: { BTroop: 70, HKTroop: 80, KTroop: 70, SHQ: 30 }
     }
 ];
+
+function getPlacements(session) {
+    return departments.slice().sort(function (a, b) {
+        return session.lichessScores[b] - session.lichessScores[a];
+    });
+}
 
 // Points for each finishing position: 1st gets 4, 2nd gets 3 and so on
 const pointsByPlace = [4, 3, 2, 1];
@@ -46,7 +48,7 @@ function calculateTotals() {
 
     // Go through each session, then each placement inside it
     sessions.forEach(function (session) {
-        session.placements.forEach(function (dept, index) {
+        getPlacements(session).forEach(function (dept, index) {
           totals[dept] += pointsByPlace[index] * session.multiplier; 
         });
     });
@@ -68,7 +70,7 @@ function getRanking() {
             lichess += session.lichessScores[dept];
 
             // Tiebreaker 2: find the best (lowest) finishing position
-            const place = session.placements.indexOf(dept) + 1;
+            const place = getPlacements(session).indexOf(dept) + 1;
             if (place < bestPlace) {
                 bestPlace = place;
             }
@@ -142,7 +144,7 @@ function getHistory() {
     const history = [];
 
     sessions.forEach(function (session) {
-        session.placements.forEach(function (dept, index) {
+        getPlacements(session).forEach(function (dept, index) {
             running[dept] += pointsByPlace[index] * session.multiplier;
         });
 
