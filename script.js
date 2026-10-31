@@ -1,18 +1,18 @@
 // The Four Departments
-const departments = ["BTroop", "HKTroop", "KTroop", "SHQ"]
+const departments = ["B-Troop", "HK-Troop", "K-Troop", "SHQ"]
 
 // Results of each session. "placements" lists departments from 1st to last.
 const sessions = [
     {
         name: "Session 1",
         multiplier: 1,
-        lichessScores: { BTroop: 52, HKTroop: 90, KTroop: 40, SHQ: 33 }
+        lichessScores: { B-Troop: 52, HK-Troop: 90, K-Troop: 40, SHQ: 33 }
     },
 
     {
         name: "Session 2",
         multiplier: 1,
-        lichessScores: { BTroop: 40, HKTroop: 50, KTroop: 20, SHQ: 63 }
+        lichessScores: { B-Troop: 40, HK-Troop: 50, K-Troop: 20, SHQ: 63 }
     }
 ];
 
