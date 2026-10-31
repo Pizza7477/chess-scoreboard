@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Championship Scoreboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="scoreboard-wrapper">
+        <div class="scoreboard-card">
+
+            <div class="scoreboard-header">
+                <h1>Chess Championship 2026</h1>
+                <p class="scoreboard-subtitle">Inter-Department Challenge • Live Standings</p>
+            </div>
+
+            <div class="leader-box">
+                <span class="leader-label">Current Leader</span>
+                <span id="leaderTeam" class="leader-team">--</span>
+            </div>
+
+            <div class="chart-card">
+                <h2>Score Progress</h2>
+                <canvas id="scoreChart"></canvas>
+            </div>
+
+            <div class="scoreboard-table-wrap">
+                <table class="scoreboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreTableBody"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
