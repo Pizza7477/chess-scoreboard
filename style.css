@@ -559,3 +559,19 @@ button:disabled {
         width: 100%;
     }
 }
+
+/* ==== FINALIST BADGE ==== */
+.finalist-badge {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #001233;
+    background: linear-gradient(90deg, #22d3ee, #3b82f6);
+}
+
+.finalist {
+    border-left: 3px solid #22d3ee;
+}
