@@ -17,8 +17,14 @@ const sessions = [
 
     {
         name: "Session 3",
-        multiplier: 2,
+        multiplier: 1,
         placements : ["KTroop", "SHQ", "BTroop", "HKTroop"]
+    },
+
+   {
+        name: "Session 4",
+        multiplier: 1,
+        placements : ["HKTroop", "KTroop", "SHQ", "BTroop"]
     }
 ];
 
@@ -92,3 +98,79 @@ function showScoreboard() {
 }
 
 showScoreboard();
+
+// One color per department (the keys must match departments name)
+const departmentColors = {
+    BTroop: "#22d3ee",
+    HKTroop: "#3b82f6",
+    KTroop: "#8b5cf6",
+    SHQ: "#10b981"
+};
+
+// Work out everyone's total after each session
+function getHistory() {
+    const running = {};
+
+    departments.forEach(function (dept) {
+        running[dept] = 0;
+    });
+
+    const history = [];
+
+    sessions.forEach(function (session) {
+        session.placements.forEach(function (dept, index) {
+            running[dept] += pointsByPlace[index] * session.multiplier;
+        });
+
+        // Save a COPY of the totals as they stand after this session
+        history.push({ ...running });
+    });
+
+    return history;
+
+}
+
+function drawChart() {
+    const history = getHistory();
+    const ctx = document.getElementById("scoreChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            // The bottom axis: one label per session
+            labels: sessions.map(function (session) {
+                return session.name;
+            }),
+            // One line per department
+            datasets: departments.map(function (dept) {
+                return {
+                    label: dept,
+                    data: history.map(function (snapshot) {
+                        return snapshot[dept];
+                    }),
+                    borderColor: departmentColors[dept],
+                    backgroundColor: departmentColors[dept],
+                    tension: 0.3
+                };
+            })
+        },
+        options: {
+            plugins: {
+                legend: { labels: { color: "#e2e8f0" } }
+            },
+            scales: {
+                x: {
+                    ticks: { color: "#cbd5e1" },
+                    grid: { color: "rgba(148, 163, 184, 0.08)" }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: "#cbd5e1" },
+                    grid: { color: "rgba(148, 163, 184, 0.08)" }
+                }
+            }
+        }
+    });
+}
+
+drawChart();
