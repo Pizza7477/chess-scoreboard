@@ -6,25 +6,29 @@ const sessions = [
     {
         name: "Session 1",
         multiplier: 1,
-        placements: ["BTroop", "HKTroop", "KTroop", "SHQ"]
+        placements: ["BTroop", "HKTroop", "KTroop", "SHQ"],
+        lichessScores: { BTroop: 52, HKTroop: 47, KTroop: 40, SHQ: 33 }
     },
 
     {
         name: "Session 2",
         multiplier: 1,
-        placements: ["SHQ", "BTroop", "HKTroop", "KTroop"]
+        placements: ["SHQ", "HKTroop", "BTroop", "KTroop"],
+        lichessScores: { BTroop: 40, HKTroop: 50, KTroop: 20, SHQ: 63 }
     },
 
     {
         name: "Session 3",
         multiplier: 1,
-        placements : ["KTroop", "SHQ", "BTroop", "HKTroop"]
+        placements : [ "HKTroop", "KTroop", "SHQ", "BTroop"],
+        lichessScores: { BTroop: 30, HKTroop: 90, KTroop: 80, SHQ: 73 }
     },
 
    {
         name: "Session 4",
         multiplier: 1,
-        placements : ["HKTroop", "KTroop", "SHQ", "BTroop"]
+        placements : ["HKTroop", "KTroop", "BTroop", "SHQ"],
+        lichessScores: { BTroop: 60, HKTroop: 80, KTroop: 70, SHQ: 30 }
     }
 ];
 
@@ -55,12 +59,32 @@ function calculateTotals() {
 function getRanking() {
     const totals = calculateTotals();
 
-    const ranking = departments.map(function (dept){
-        return { name: dept, points: totals[dept] };
+    const ranking = departments.map(function (dept) {
+        let lichess = 0;
+        let bestPlace = departments.length;
+
+        sessions.forEach(function (session) {
+            // Tiebreaker 1: add up the Lichess scores
+            lichess += session.lichessScores[dept];
+
+            // Tiebreaker 2: find the best (lowest) finishing position
+            const place = session.placements.indexOf(dept) + 1;
+            if (place < bestPlace) {
+                bestPlace = place;
+            }
+        });
+
+        return { name: dept, points: totals[dept], lichess, bestPlace };
     });
 
     ranking.sort(function (a, b) {
-        return b.points - a.points;
+        if (b.points !== a.points) {
+            return b.points - a.points;
+        }
+        if (b.lichess !== a.lichess) {
+            return b.lichess - a.lichess;
+        }
+        return a.bestPlace - b.bestPlace;
     });
 
     return ranking;
@@ -90,7 +114,7 @@ function showScoreboard() {
             <td>#${index + 1}</td>
             <td>${team.name}</td>
             <td>${team.points}</td>
-        
+            <td>${team.lichess}</td>
         `;
         
         tableBody.appendChild(row);
