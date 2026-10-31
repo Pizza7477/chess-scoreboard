@@ -17,10 +17,32 @@ const sessions = [
 
     {
         name: "Session 3",
-        multiplier: 1,
+        multiplier: 2,
         placements : ["KTroop", "SHQ", "BTroop", "HKTroop"]
     }
 ];
 
-console.log(departments);
-console.log(sessions);
+// Points for each finishing position: 1st gets 4, 2nd gets 3 and so on
+const pointsByPlace = [4, 3, 2, 1];
+
+// Add up every session's points for every department
+function calculateTotals() {
+    const totals={};
+
+    // Start every deparment on 0 points
+    departments.forEach(function (dept){
+        totals[dept] = 0;
+    });
+
+    // Go through each session, then each placement inside it
+    sessions.forEach(function (session) {
+        session.placements.forEach(function (dept, index) {
+          totals[dept] += pointsByPlace[index] * session.multiplier; 
+        });
+    });
+
+    return totals
+}
+
+
+console.log(calculateTotals());
