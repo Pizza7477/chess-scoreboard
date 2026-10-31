@@ -45,4 +45,50 @@ function calculateTotals() {
 }
 
 
-console.log(calculateTotals());
+// Turn the totals into a sorted list: highest points first
+function getRanking() {
+    const totals = calculateTotals();
+
+    const ranking = departments.map(function (dept){
+        return { name: dept, points: totals[dept] };
+    });
+
+    ranking.sort(function (a, b) {
+        return b.points - a.points;
+    });
+
+    return ranking;
+}
+
+// Draw the leader box and the table on the page
+function showScoreboard() {
+    const ranking = getRanking();
+
+    // Leader box: the first item in the sorted list
+    const leaderBox = document.getElementById("leaderTeam");
+    leaderBox.textContent = ranking[0].name + " (" + ranking[0].points + ")";
+
+
+    // Table: clear it, then add one row per department
+    const tableBody = document.getElementById("scoreTableBody");
+    tableBody.innerHTML = "";
+
+    ranking.forEach(function (team, index) {
+        const row = document.createElement("tr");
+
+        if (index === 0) {
+            row.classList.add("first-place");
+        }
+
+        row.innerHTML = `
+            <td>#${index + 1}</td>
+            <td>${team.name}</td>
+            <td>${team.points}</td>
+        
+        `;
+        
+        tableBody.appendChild(row);
+    });
+}
+
+showScoreboard();
