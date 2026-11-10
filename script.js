@@ -16,8 +16,33 @@ function getPlacements(session) {
     });
 }
 
+// A session with no entered scores should not affect the standings.
+function hasLichessScores(session) {
+    return departments.some(function (dept) {
+        return session.lichessScores[dept] !== 0;
+    });
+}
+
 // Points for each finishing position: 1st gets 4, 2nd gets 3 and so on
 const pointsByPlace = [4, 3, 2, 1];
+
+// One color per department (the keys must match departments name)
+const departmentColors = {
+    "B-Troop": "#22d3ee",
+    "HK-Troop": "#3b82f6",
+    "K-Troop": "#8b5cf6",
+    "SHQ": "#10b981"
+};
+
+function addSessionPoints(session, totals) {
+    if (!hasLichessScores(session)) {
+        return;
+    }
+
+    getPlacements(session).forEach(function (dept, index) {
+        totals[dept] += pointsByPlace[index] * session.multiplier;
+    });
+}
 
 // Add up every session's points for every department
 function calculateTotals() {
@@ -30,9 +55,7 @@ function calculateTotals() {
 
     // Go through each session, then each placement inside it
     sessions.forEach(function (session) {
-        getPlacements(session).forEach(function (dept, index) {
-          totals[dept] += pointsByPlace[index] * session.multiplier; 
-        });
+        addSessionPoints(session, totals);
     });
 
     return totals
@@ -52,6 +75,9 @@ function getRanking() {
             lichess += session.lichessScores[dept];
 
             // Tiebreaker 2: find the best (lowest) finishing position
+            if (!hasLichessScores(session)) {
+                return;
+            }
             const place = getPlacements(session).indexOf(dept) + 1;
             if (place < bestPlace) {
                 bestPlace = place;
@@ -81,6 +107,7 @@ function showScoreboard() {
     // Leader box: the first item in the sorted list
     const leaderBox = document.getElementById("leaderTeam");
     leaderBox.textContent = ranking[0].name + " (" + ranking[0].points + ")";
+    leaderBox.style.color = departmentColors[ranking[0].name];
 
 
     // Table: clear it, then add one row per department
@@ -107,20 +134,16 @@ function showScoreboard() {
             <td>${team.points}</td>
             <td>${team.lichess}</td>
         `;
+        const teamNameCell = row.cells[1];
+        teamNameCell.classList.add("team-name");
+        teamNameCell.style.color = departmentColors[team.name];
+        teamNameCell.style.fontWeight = "bold";
         
         tableBody.appendChild(row);
     });
 }
 
 showScoreboard();
-
-// One color per department (the keys must match departments name)
-const departmentColors = {
-    BTroop: "#22d3ee",
-    HKTroop: "#3b82f6",
-    KTroop: "#8b5cf6",
-    SHQ: "#10b981"
-};
 
 // Work out everyone's total after each session
 function getHistory() {
@@ -133,9 +156,7 @@ function getHistory() {
     const history = [];
 
     sessions.forEach(function (session) {
-        getPlacements(session).forEach(function (dept, index) {
-            running[dept] += pointsByPlace[index] * session.multiplier;
-        });
+        addSessionPoints(session, running);
 
         // Save a COPY of the totals as they stand after this session
         history.push({ ...running });
