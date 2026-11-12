@@ -4,7 +4,7 @@ const departments = ["B-Troop", "HK-Troop", "K-Troop", "SHQ"]
 // Results of each session. "placements" lists departments from 1st to last.
 const sessions = [
     {
-        name: "Session 1",
+        name: "Session - 0",
         multiplier: 1,
         lichessScores: { "B-Troop": 0, "HK-Troop": 0, "K-Troop": 0, "SHQ": 0 }
     }
