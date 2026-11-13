@@ -7,6 +7,12 @@ const sessions = [
         name: "Session - 0",
         multiplier: 1,
         lichessScores: { "B-Troop": 0, "HK-Troop": 0, "K-Troop": 0, "SHQ": 0 }
+    },
+
+    {
+        name: "Session - 1",
+        multiplier: 1,
+        lichessScores: { "B-Troop": 12, "HK-Troop": 14, "K-Troop": 6, "SHQ": 0 }
     }
 ];
 
