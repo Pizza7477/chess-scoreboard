@@ -272,7 +272,7 @@ function fillTeamBoxes() {
         const teamTotal = teamPlayers.reduce(function (sum, player) {
             return sum + getTotal(player);
         }, 0);
-        box.querySelector(".team-total").textContent = teamTotal + " pts";
+        box.querySelector(".team-total").textContent = "Lichess Score: " + teamTotal;
 
         // The list is sorted, so the first player has the top score
         const topScore = getTotal(teamPlayers[0]);
