@@ -1,6 +1,6 @@
 const players = [
     { name: "IDOKNOWW",      team: "B-Troop",  scores: [0, 6], wins: [0, 3], losses: [0, 0] },
-    { name: "Adis0n8393",    team: "B-Troop",  scores: [0, 1], wins: [0, 1], losses: [0, 0] },
+    { name: "Adis0n8393",    team: "B-Troop",  scores: [0, 2], wins: [0, 1], losses: [0, 0] },
     { name: "rajthapa0734",  team: "B-Troop",  scores: [0, 2], wins: [0, 1], losses: [0, 0] },
     { name: "Ghumeraammaya", team: "B-Troop",  scores: [0, 2], wins: [0, 1], losses: [0, 1] },
     { name: "Kaalchakra16",  team: "B-Troop",  scores: [0, 2], wins: [0, 1], losses: [0, 1] },
