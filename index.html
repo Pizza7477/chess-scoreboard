@@ -7,28 +7,99 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+   <div class="page-layout">
 
-    <div class="scoreboard-wrapper">
-        <div class="scoreboard-card">
-
-            <div class="scoreboard-header">
-                <div class="scoreboard-title">
-                    <img class="scoreboard-logo" src="Images/iu.PNG" alt="IU crest">
-                    <h1>247 SQN - OC's Chess Championship 2026</h1>
-                    <img class="scoreboard-logo" src="Images/iu.PNG" alt="IU crest">
+        <aside class="team-column">
+            <!-- HK and B Troop boxes -->
+            <div class="team-box" data-team="HK-Troop" style="--team-color: #3b82f6;">
+                <div class="team-box-header">
+                    <h3>HK Troop</h3>
+                    <span class="team-total"></span>
                 </div>
-                <p class="scoreboard-subtitle">Inter-Department Challenge • Live Standings</p>
+                <ol class="mini-list"></ol>
             </div>
-
-            <div class="chart-card">
-                <h2>Score Progress</h2>
-                    <p>Updating in progress...</p>
-                    <p>-praju</p>
-                </canvas>
+            
+            <div class="team-box" data-team="B-Troop" style="--team-color: #22d3ee;">
+                <div class="team-box-header">
+                    <h3>B Troop</h3>
+                    <span class="team-total"></span>
+                </div>
+                <ol class="mini-list"></ol>
             </div>
+        </aside>
 
+        <div class="scoreboard-wrapper">
+            <div class="scoreboard-card">
+
+                <div class="scoreboard-header">
+                    <div class="scoreboard-title">
+                        <img class="scoreboard-logo" src="Images/iu.PNG" alt="IU crest">
+                        <h1>247 SQN - OC's Chess Championship 2026</h1>
+                        <img class="scoreboard-logo" src="Images/iu.PNG" alt="IU crest">
+                    </div>
+                    <p class="scoreboard-subtitle">Inter-Department Challenge • Live Standings</p>
+                </div>
+
+                <div class="leader-box">
+                    <div class="leader-main">
+                        <span class="leader-label">Current Leader</span>
+                        <span id="leaderTeam" class="leader-team">--</span>
+                        <span id="leaderLead" class="leader-lead"></span>
+                    </div>
+
+                    <!-- <div class="session-progress">
+                        <span id="sessionText" class="leader-label"></span>
+                        <div class="progress-track">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="chart-card">
+                    <h2>Score Progress</h2>
+                    <canvas id="scoreChart"></canvas>
+                </div>
+
+                <div class="scoreboard-table-wrap">
+                    <table class="scoreboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Team</th>
+                                <th>Points</th>
+                                <th>Lichess Scores</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scoreTableBody"></tbody>
+                    </table>
+            </div>
 
         </div>
     </div>
+
+    <aside class="team-column">
+            <!-- K and SHQ Troop boxes -->
+        <div class="team-box" data-team="K-Troop" style="--team-color: #8b5cf6;">
+            <div class="team-box-header">
+                <h3>K Troop</h3>
+                <span class="team-total"></span>
+            </div>
+            <ol class="mini-list"></ol>
+        </div>
+        
+        <div class="team-box" data-team="SHQ" style="--team-color: #10b981;">
+            <div class="team-box-header">
+                <h3>SHQ</h3>
+                <span class="team-total"></span>
+            </div>  
+            <ol class="mini-list"></ol>
+        </div>
+    </aside>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="players.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
