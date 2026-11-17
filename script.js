@@ -195,15 +195,15 @@ function showScoreboard() {
         }
 
         // The top 2 departments reach the final
-        let badge = "";
-        if (played > 0 && index < 2) {
-            row.classList.add("finalist");
-            badge = `<span class="finalist-badge">Finalist</span>`;
-        }
+        // let badge = "";
+        // if (played > 0 && index < 2) {
+           // row.classList.add("finalist");
+            //badge = `<span class="finalist-badge">Finalist</span>`;
+        //}
 
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${team.name}${badge}</td>
+            <td>${team.name}</td>
             <td>${team.points}</td>
             <td>${team.lichess}</td>
         `;
