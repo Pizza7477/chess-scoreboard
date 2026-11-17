@@ -45,6 +45,7 @@
                         <span class="leader-label">Current Leader</span>
                         <span id="leaderTeam" class="leader-team">--</span>
                         <span id="leaderLead" class="leader-lead"></span>
+                        <span id="sessionStatus" class="leader-status"></span>
                     </div>
 
                     <!-- <div class="session-progress">
@@ -53,6 +54,18 @@
                             <div id="progressFill" class="progress-fill"></div>
                         </div>
                     </div> -->
+                </div>
+
+
+                <div class="how-box">
+                    <h2>How scoring works</h2>
+                    <ol>
+                        <li>In every session, the four troops are ranked by their <strong>team Lichess score</strong>.</li>
+                        <li>That ranking gives <strong>points</strong>: 1st = 4, 2nd = 3, 3rd = 2, 4th = 1. The Power Hour counts double.</li>
+                        <li>If troops tie in a session, they <strong>share</strong> the points (for example 2.5 each).</li>
+                        <li>The <strong>Points</strong> column decides the standings. Total Lichess score only breaks ties.</li>
+                        <li>The <strong>top 2 troops</strong> after the last session reach the final.</li>
+                    </ol>
                 </div>
 
                 <div class="chart-card">
@@ -66,12 +79,32 @@
                             <tr>
                                 <th>Rank</th>
                                 <th>Team</th>
-                                <th>Winning/Final Points</th>
-                                <th>Lichess Scores</th>
+                                <th>Points</th>
+                                <th>Total Lichess (tiebreak)</th>
                             </tr>
                         </thead>
                         <tbody id="scoreTableBody"></tbody>
                     </table>
+            </div>
+
+            <p class="table-note">Points decide the rank. Total Lichess score is only used if points are level.</p>
+
+            <div class="results-card">
+                <h2>Session Results</h2>
+                <div class="scoreboard-table-wrap">
+                    <table class="scoreboard-table">
+                        <thead>
+                            <tr>
+                                <th>Session</th>
+                                <th>1st</th>
+                                <th>2nd</th>
+                                <th>3rd</th>
+                                <th>4th</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionResultsBody"></tbody>
+                    </table>
+                </div>
             </div>
 
         </div>

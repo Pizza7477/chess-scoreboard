@@ -47,9 +47,16 @@ const departmentColors = {
     "SHQ": "#10b981"
 };
 
-function addSessionPoints(session, totals) {
+// Work out the points each troop earns in ONE session (tied troops share the points)
+function getSessionPoints(session) {
+    const points = {};
+
+    departments.forEach(function (dept) {
+        points[dept] = 0;
+    });
+
     if (!hasLichessScores(session)) {
-        return;
+        return points;
     }
 
     const placements = getPlacements(session);
@@ -71,11 +78,22 @@ function addSessionPoints(session, totals) {
         const share = pool / (j - i + 1);
 
         for (let k = i; k <= j; k++) {
-            totals[placements[k]] += share * session.multiplier;
+            points[placements[k]] = share * session.multiplier;
         }
 
         i = j + 1;
     }
+
+    return points;
+}
+
+// Add one session's points on top of a running total
+function addSessionPoints(session, totals) {
+    const points = getSessionPoints(session);
+
+    departments.forEach(function (dept) {
+        totals[dept] += points[dept];
+    });
 }
 
 // Add up every session's points for every department
@@ -138,26 +156,32 @@ function getRanking() {
 function showScoreboard() {
     const ranking = getRanking();
 
-    // Leader box: the first item in the sorted list
+    // How many sessions have real scores?
+    const played = sessions.filter(hasLichessScores).length;
     const leaderBox = document.getElementById("leaderTeam");
-    leaderBox.textContent = ranking[0].name;
-    leaderBox.style.color = departmentColors[ranking[0].name];
 
-    // How far ahead of 2nd place?
-    const gap = ranking[0].points - ranking[1].points;
-    let leadText = ranking[0].points + " pts • ";
-    if (gap > 0) {
-        leadText += "leads " + ranking[1].name + " by " + gap + (gap === 1 ? " pt" : " pts");
+    if (played === 0) {
+        leaderBox.textContent = "No results yet";
+        leaderBox.style.color = "";
+        document.getElementById("leaderLead").textContent = "";
     } else {
-        leadText += "level on points with " + ranking[1].name;
+        // Leader box: the first item in the sorted list
+        leaderBox.textContent = ranking[0].name;
+        leaderBox.style.color = departmentColors[ranking[0].name];
+
+        // How far ahead of 2nd place?
+        const gap = ranking[0].points - ranking[1].points;
+        let leadText = ranking[0].points + " pts • ";
+        if (gap > 0) {
+            leadText += "leads " + ranking[1].name + " by " + gap + (gap === 1 ? " pt" : " pts");
+        } else {
+            leadText += "level on points with " + ranking[1].name;
+        }
+        document.getElementById("leaderLead").textContent = leadText;
     }
-    document.getElementById("leaderLead").textContent = leadText;
 
-    // Session progress: count only sessions that have scores entered
-    // const played = sessions.filter(hasLichessScores).length;
-    //document.getElementById("sessionText").textContent = "Session " + played + " of " + TOTAL_SESSIONS;
-    // document.getElementById("progressFill").style.width = (played / TOTAL_SESSIONS * 100) + "%";
-
+    document.getElementById("sessionStatus").textContent =
+        "After " + played + " of " + TOTAL_SESSIONS + " sessions • Top 2 reach the final";
 
     // Table: clear it, then add one row per department
     const tableBody = document.getElementById("scoreTableBody");
@@ -172,14 +196,14 @@ function showScoreboard() {
 
         // The top 2 departments reach the final
         let badge = "";
-            if (index < 2) {
+        if (played > 0 && index < 2) {
             row.classList.add("finalist");
             badge = `<span class="finalist-badge">Finalist</span>`;
         }
 
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${team.name}</td>
+            <td>${team.name}${badge}</td>
             <td>${team.points}</td>
             <td>${team.lichess}</td>
         `;
@@ -193,6 +217,49 @@ function showScoreboard() {
 }
 
 showScoreboard();
+
+// Session Results grid: one row per played session, latest first
+function showSessionResults() {
+    const body = document.getElementById("sessionResultsBody");
+    body.innerHTML = "";
+
+    const played = sessions.filter(hasLichessScores).reverse();
+
+    if (played.length === 0) {
+        body.innerHTML = '<tr><td colspan="5">No results yet</td></tr>';
+        return;
+    }
+
+    played.forEach(function (session) {
+        const placements = getPlacements(session);
+        const points = getSessionPoints(session);
+
+        let cells = "<td>" + session.name;
+        if (session.multiplier > 1) {
+            cells += ' <span class="multiplier-badge">×' + session.multiplier + '</span>';
+        }
+        cells += "</td>";
+
+        placements.forEach(function (dept, i) {
+            const score = session.lichessScores[dept];
+            const tied = placements.some(function (other, j) {
+                return j !== i && session.lichessScores[other] === score;
+            });
+
+            cells += `
+                <td>
+                    <span class="result-team" style="color: ${departmentColors[dept]}">${dept}</span>
+                    <span class="result-detail">${score} Lichess • +${points[dept]} pts${tied ? " • tie" : ""}</span>
+                </td>`;
+        });
+
+        const row = document.createElement("tr");
+        row.innerHTML = cells;
+        body.appendChild(row);
+    });
+}
+
+showSessionResults();
 
 // Work out everyone's total after each session
 function getHistory() {
@@ -334,7 +401,7 @@ function fillTeamBoxes() {
         const teamTotal = teamPlayers.reduce(function (sum, player) {
             return sum + getTotal(player);
         }, 0);
-        box.querySelector(".team-total").textContent = "Lichess Score: " + teamTotal;
+        box.querySelector(".team-total").textContent = "Team total: " + teamTotal;
 
         // The list is sorted, so the first player has the top score
         const topScore = getTotal(teamPlayers[0]);

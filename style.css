@@ -348,6 +348,80 @@ body {
 
 
 
+
+/* ===== HOW IT WORKS BOX ===== */
+
+.how-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+}
+
+.how-box h2 {
+    color: var(--accent);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.how-box ol {
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.how-box strong {
+    color: var(--text);
+}
+
+/* ===== SESSION STATUS / NOTES ===== */
+
+.leader-status {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.table-note {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 10px 4px 24px;
+}
+
+/* ===== SESSION RESULTS ===== */
+
+.results-card h2 {
+    color: var(--text);
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+
+.result-team {
+    display: block;
+    font-weight: bold;
+}
+
+.result-detail {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.multiplier-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--badge-text);
+    background: var(--accent);
+}
+
 /* ===== SMALL SCREENS ===== */
 
 @media (max-width: 1300px) {
