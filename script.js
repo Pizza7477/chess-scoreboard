@@ -14,6 +14,12 @@ const sessions = [
         name: "Session - 1",
         multiplier: 1,
         lichessScores: { "B-Troop": 14, "HK-Troop": 16, "K-Troop": 12, "SHQ": 0 }
+    },
+
+    {
+        name: "Session - 2",
+        multiplier: 1,
+        lichessScores: { "B-Troop": 37, "HK-Troop": 42, "K-Troop": 35, "SHQ": 2 }
     }
 ];
 
@@ -288,7 +294,7 @@ function fillTeamBoxes() {
             item.innerHTML = `
                 <span class="mini-info">
                     <span class="mini-name">${player.name}${crown}</span>
-                    <span class="mini-record">${sumOf(player.wins)}W · ${sumOf(player.losses)}L</span>
+                    <span class="mini-record">${sumOf(player.wins)}W · ${sumOf(player.draws)}D · ${sumOf(player.losses)}L</span>
                 </span>
                 <span class="mini-score">${score}</span>
             `;
@@ -299,4 +305,3 @@ function fillTeamBoxes() {
 }
 
 fillTeamBoxes();
-
