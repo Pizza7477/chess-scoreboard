@@ -52,9 +52,30 @@ function addSessionPoints(session, totals) {
         return;
     }
 
-    getPlacements(session).forEach(function (dept, index) {
-        totals[dept] += pointsByPlace[index] * session.multiplier;
-    });
+    const placements = getPlacements(session);
+    let i = 0;
+
+    while (i < placements.length) {
+        // Find where the group of tied troops ends
+        let j = i;
+        while (j + 1 < placements.length &&
+               session.lichessScores[placements[j + 1]] === session.lichessScores[placements[i]]) {
+            j++;
+        }
+
+        // Add up the points for the places this group covers, then share them equally
+        let pool = 0;
+        for (let k = i; k <= j; k++) {
+            pool += pointsByPlace[k];
+        }
+        const share = pool / (j - i + 1);
+
+        for (let k = i; k <= j; k++) {
+            totals[placements[k]] += share * session.multiplier;
+        }
+
+        i = j + 1;
+    }
 }
 
 // Add up every session's points for every department
