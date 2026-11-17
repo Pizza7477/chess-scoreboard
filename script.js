@@ -5,7 +5,7 @@ const TOTAL_SESSIONS = 5;
 // Results of each session. "placements" lists departments from 1st to last.
 const sessions = [
     {
-        name: "Session - 0",
+        name: "Start",
         multiplier: 1,
         lichessScores: { "B-Troop": 0, "HK-Troop": 0, "K-Troop": 0, "SHQ": 0 }
     },
@@ -198,14 +198,15 @@ function drawChart() {
     const history = getHistory();
     const ctx = document.getElementById("scoreChart").getContext("2d");
 
+    // Use the same font as the rest of the page
+    Chart.defaults.font.family = 'Georgia, "Times New Roman", serif';
+
     new Chart(ctx, {
         type: "line",
         data: {
-            // The bottom axis: one label per session
             labels: sessions.map(function (session) {
                 return session.name;
             }),
-            // One line per department
             datasets: departments.map(function (dept) {
                 return {
                     label: dept,
@@ -213,24 +214,58 @@ function drawChart() {
                         return snapshot[dept];
                     }),
                     borderColor: departmentColors[dept],
-                    backgroundColor: departmentColors[dept],
-                    tension: 0.3
+                    borderWidth: 4,
+                    tension: 0.35,
+                    pointRadius: 6,
+                    pointHoverRadius: 9,
+                    pointBackgroundColor: "#101010",
+                    pointBorderColor: departmentColors[dept],
+                    pointBorderWidth: 3
                 };
             })
         },
         options: {
+            responsive: true,
+            interaction: { mode: "index", intersect: false },
+            animation: { duration: 1200, easing: "easeOutQuart" },
             plugins: {
-                legend: { labels: { color: "#e2e8f0" } }
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        color: "#f4f1ea",
+                        usePointStyle: true,
+                        pointStyle: "circle",
+                        padding: 20,
+                        font: { size: 14 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: "#1a1a1a",
+                    borderColor: "#e3c565",
+                    borderWidth: 1,
+                    titleColor: "#e3c565",
+                    bodyColor: "#f4f1ea",
+                    padding: 12,
+                    itemSort: function (a, b) {
+                        return b.parsed.y - a.parsed.y;
+                    },
+                    callbacks: {
+                        label: function (item) {
+                            return " " + item.dataset.label + ": " + item.parsed.y + " pts";
+                        }
+                    }
+                }
             },
             scales: {
                 x: {
-                    ticks: { color: "#cbd5e1" },
-                    grid: { color: "rgba(148, 163, 184, 0.08)" }
+                    ticks: { color: "#a8a398", font: { size: 13 } },
+                    grid: { display: false }
                 },
                 y: {
                     beginAtZero: true,
-                    ticks: { color: "#cbd5e1" },
-                    grid: { color: "rgba(148, 163, 184, 0.08)" }
+                    title: { display: true, text: "Points", color: "#a8a398" },
+                    ticks: { color: "#a8a398", precision: 0, font: { size: 13 } },
+                    grid: { color: "rgba(227, 197, 101, 0.10)" }
                 }
             }
         }
