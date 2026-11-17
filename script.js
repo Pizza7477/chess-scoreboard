@@ -194,13 +194,6 @@ function showScoreboard() {
             row.classList.add("first-place");
         }
 
-        // The top 2 departments reach the final
-        // let badge = "";
-        // if (played > 0 && index < 2) {
-           // row.classList.add("finalist");
-            //badge = `<span class="finalist-badge">Finalist</span>`;
-        //}
-
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${team.name}</td>
@@ -287,7 +280,7 @@ function drawChart() {
     const ctx = document.getElementById("scoreChart").getContext("2d");
 
     // Use the same font as the rest of the page
-    Chart.defaults.font.family = 'Georgia, "Times New Roman", serif';
+    Chart.defaults.font.family = '"Inter", system-ui, sans-serif';
 
     new Chart(ctx, {
         type: "line",

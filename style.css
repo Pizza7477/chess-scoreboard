@@ -24,6 +24,24 @@
     --badge-text: #101010;
 }
 
+/* ===== FONTS (stored in the fonts folder, so no internet is needed) ===== */
+
+@font-face {
+    font-family: "Inter";
+    src: url("fonts/Inter.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay.woff2") format("woff2");
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ===== GLOBAL ===== */
 
 * {
@@ -33,7 +51,7 @@
 }
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     min-height: 100vh;
     color: var(--text);
     background-color: var(--bg-page);
@@ -46,6 +64,10 @@ body {
         var(--square-b) 0
     );
     background-size: 90px 90px;
+}
+
+h1, h2, h3, .leader-team {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 /* ===== LAYOUT ===== */
