@@ -445,12 +445,111 @@ body {
     }
 
     .page-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
     .team-column {
         grid-template-columns: 1fr 1fr;
     }
     .scoreboard-wrapper {
         order: -1;
+    }
+}
+
+/* ===== PHONES AND SMALL TABLETS ===== */
+
+.team-name {
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    /* Stack the four troop boxes in one column instead of two */
+    .team-column {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .page-layout {
+        padding: 12px;
+        gap: 16px;
+    }
+
+    .scoreboard-card {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .scoreboard-title {
+        gap: 8px;
+    }
+
+    .scoreboard-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .scoreboard-header h1 {
+        font-size: 1.25rem;
+        letter-spacing: 0;
+        line-height: 1.25;
+    }
+
+    .scoreboard-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .leader-box {
+        padding: 14px 12px;
+    }
+
+    .leader-team {
+        font-size: 1.5rem;
+    }
+
+    .how-box {
+        padding: 14px 16px;
+    }
+
+    .how-box ol {
+        font-size: 0.88rem;
+    }
+
+    .chart-card {
+        padding: 14px 10px;
+    }
+
+    /* Tables: tighter cells so nothing is squeezed */
+    .scoreboard-table-wrap {
+        padding: 6px;
+    }
+
+    .scoreboard-table {
+        font-size: 0.85rem;
+    }
+
+    .scoreboard-table thead th {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+
+    .scoreboard-table tbody td {
+        padding: 12px 8px;
+    }
+
+    /* The session results table is wide, so it scrolls sideways */
+    .results-card .scoreboard-table {
+        min-width: 560px;
+    }
+
+    .finalist-badge {
+        display: block;
+        width: fit-content;
+        margin: 4px 0 0;
+        font-size: 0.65rem;
+    }
+
+    .team-box {
+        min-height: 0;
+        padding: 16px;
     }
 }

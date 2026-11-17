@@ -314,6 +314,8 @@ function drawChart() {
         },
         options: {
             responsive: true,
+            // Taller chart on phones so the lines and legend aren't cramped
+            aspectRatio: window.innerWidth < 600 ? 1.1 : 2,
             interaction: { mode: "index", intersect: false },
             animation: { duration: 1200, easing: "easeOutQuart" },
             plugins: {
@@ -324,7 +326,7 @@ function drawChart() {
                         usePointStyle: true,
                         pointStyle: "circle",
                         padding: 20,
-                        font: { size: 14 }
+                        font: { size: window.innerWidth < 600 ? 12 : 14 }
                     }
                 },
                 tooltip: {
