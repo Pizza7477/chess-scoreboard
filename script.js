@@ -19,7 +19,7 @@ const sessions = [
     {
         name: "Session - 2",
         multiplier: 1,
-        lichessScores: { "B-Troop": 26, "HK-Troop": 23, "K-Troop": 23, "SHQ": 2 }
+        lichessScores: { "B-Troop": 23, "HK-Troop": 26, "K-Troop": 23, "SHQ": 2 }
     }
 ];
 
