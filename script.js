@@ -26,12 +26,30 @@ const sessions = [
         name: "Session - 3",
         multiplier: 1,
         lichessScores: { "B-Troop": 44, "HK-Troop": 28, "K-Troop": 33, "SHQ": 7 }
+    },
+
+    {
+        name: "Session - 4",
+        multiplier: 1,
+        lichessScores: { "B-Troop": 21, "HK-Troop": 36, "K-Troop": 42, "SHQ": 5 },
+        // Optional: points taken off a troop's score for this session
+        penalties: { "K-Troop": 5 }
     }
 ];
 
+// Penalty points taken off a troop in one session (0 if none)
+function getPenalty(session, dept) {
+    return (session.penalties && session.penalties[dept]) || 0;
+}
+
+// The score that counts: Lichess score minus any penalty
+function getScore(session, dept) {
+    return session.lichessScores[dept] - getPenalty(session, dept);
+}
+
 function getPlacements(session) {
     return departments.slice().sort(function (a, b) {
-        return session.lichessScores[b] - session.lichessScores[a];
+        return getScore(session, b) - getScore(session, a);
     });
 }
 
@@ -72,7 +90,7 @@ function getSessionPoints(session) {
         // Find where the group of tied troops ends
         let j = i;
         while (j + 1 < placements.length &&
-               session.lichessScores[placements[j + 1]] === session.lichessScores[placements[i]]) {
+               getScore(session, placements[j + 1]) === getScore(session, placements[i])) {
             j++;
         }
 
@@ -126,11 +144,13 @@ function getRanking() {
 
     const ranking = departments.map(function (dept) {
         let lichess = 0;
+        let penalty = 0;
         let bestPlace = departments.length;
 
         sessions.forEach(function (session) {
-            // Tiebreaker 1: add up the Lichess scores
-            lichess += session.lichessScores[dept];
+            // Tiebreaker 1: add up the Lichess scores (after penalties)
+            lichess += getScore(session, dept);
+            penalty += getPenalty(session, dept);
 
             // Tiebreaker 2: find the best (lowest) finishing position
             if (!hasLichessScores(session)) {
@@ -142,7 +162,7 @@ function getRanking() {
             }
         });
 
-        return { name: dept, points: totals[dept], lichess, bestPlace };
+        return { name: dept, points: totals[dept], lichess, penalty, bestPlace };
     });
 
     ranking.sort(function (a, b) {
@@ -204,7 +224,7 @@ function showScoreboard() {
             <td>${index + 1}</td>
             <td>${team.name}</td>
             <td>${team.points}</td>
-            <td>${team.lichess}</td>
+            <td>${team.lichess}${team.penalty > 0 ? ' <span class="penalty-note">(−' + team.penalty + ' penalty)</span>' : ""}</td>
         `;
         const teamNameCell = row.cells[1];
         teamNameCell.classList.add("team-name");
@@ -240,15 +260,20 @@ function showSessionResults() {
         cells += "</td>";
 
         placements.forEach(function (dept, i) {
-            const score = session.lichessScores[dept];
+            const score = getScore(session, dept);
+            const penalty = getPenalty(session, dept);
             const tied = placements.some(function (other, j) {
-                return j !== i && session.lichessScores[other] === score;
+                return j !== i && getScore(session, other) === score;
             });
+
+            const penaltyText = penalty > 0
+                ? ' <span class="penalty-note">(' + session.lichessScores[dept] + ' − ' + penalty + ' penalty)</span>'
+                : "";
 
             cells += `
                 <td>
                     <span class="result-team" style="color: ${departmentColors[dept]}">${dept}</span>
-                    <span class="result-detail">${score} Lichess • +${points[dept]} pts${tied ? " • tie" : ""}</span>
+                    <span class="result-detail">${score} Lichess${penaltyText} • +${points[dept]} pts${tied ? " • tie" : ""}</span>
                 </td>`;
         });
 
@@ -402,7 +427,13 @@ function fillTeamBoxes() {
         const teamTotal = teamPlayers.reduce(function (sum, player) {
             return sum + getTotal(player);
         }, 0);
-        box.querySelector(".team-total").textContent = "Team total: " + teamTotal;
+        const teamPenalty = sessions.reduce(function (sum, session) {
+            return sum + getPenalty(session, teamName);
+        }, 0);
+
+        box.querySelector(".team-total").textContent = teamPenalty > 0
+            ? "Team total: " + (teamTotal - teamPenalty) + " (−" + teamPenalty + " penalty)"
+            : "Team total: " + teamTotal;
 
         // The list is sorted, so the first player has the top score
         const topScore = getTotal(teamPlayers[0]);

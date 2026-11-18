@@ -444,6 +444,14 @@ h1, h2, h3, .leader-team {
     background: var(--accent);
 }
 
+/* Quiet note for penalties: small, muted, not highlighted */
+.penalty-note {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
 /* ===== SMALL SCREENS ===== */
 
 @media (max-width: 1300px) {
