@@ -311,9 +311,15 @@ h1, h2, h3, .leader-team {
     align-items: baseline;
 }
 
+.team-box-header h3 {
+    white-space: nowrap;
+}
+
 .team-total {
     color: var(--text-muted);
     font-size: 0.9rem;
+    text-align: right;
+    margin-left: 10px;
 }
 
 .mini-list {
@@ -444,6 +450,132 @@ h1, h2, h3, .leader-team {
     background: var(--accent);
 }
 
+/* ===== FINALISTS (shown when all sessions are complete) ===== */
+
+:root {
+    --gold:   #e3c565;
+    --silver: #cfd3da;
+}
+
+.final-banner {
+    text-align: center;
+    padding: 22px 20px;
+    margin-bottom: 24px;
+    border-radius: 14px;
+    border: 1px solid rgba(227, 197, 101, 0.55);
+    background:
+        radial-gradient(ellipse at top, rgba(227, 197, 101, 0.16), transparent 70%),
+        var(--bg-panel);
+    box-shadow: 0 0 30px rgba(227, 197, 101, 0.12);
+}
+
+.final-kicker {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.final-sub {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 4px 0 18px;
+}
+
+.final-matchup {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 16px;
+}
+
+.final-card {
+    flex: 1;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+}
+
+.final-card.gold   { border-color: var(--gold);   box-shadow: 0 0 18px rgba(227, 197, 101, 0.22); }
+.final-card.silver { border-color: var(--silver); box-shadow: 0 0 14px rgba(207, 211, 218, 0.14); }
+
+.final-place {
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.final-card.gold   .final-place { color: var(--gold); }
+.final-card.silver .final-place { color: var(--silver); }
+
+.final-team {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.7rem;
+    font-weight: bold;
+}
+
+.final-pts {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.final-vs {
+    align-self: center;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.final-others {
+    margin-top: 16px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.final-status {
+    margin-top: 6px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+/* Table: gold and silver rows for the two finalists */
+.gold-row {
+    background: linear-gradient(90deg, rgba(227, 197, 101, 0.16), transparent);
+    box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.silver-row {
+    background: linear-gradient(90deg, rgba(207, 211, 218, 0.10), transparent);
+    box-shadow: inset 3px 0 0 var(--silver);
+}
+
+.rank-medal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    color: #101010;
+}
+
+.rank-medal.gold   { background: var(--gold); }
+.rank-medal.silver { background: var(--silver); }
+
+/* Team boxes of the two finalists: a soft gold glow */
+.team-box.finalist-box {
+    box-shadow: 0 0 0 1px rgba(227, 197, 101, 0.45), 0 0 22px rgba(227, 197, 101, 0.14);
+}
+
 /* Quiet note for penalties: small, muted, not highlighted */
 .penalty-note {
     color: var(--text-muted);
@@ -530,6 +662,25 @@ h1, h2, h3, .leader-team {
 
     .leader-box {
         padding: 14px 12px;
+    }
+
+    .final-banner {
+        padding: 18px 12px;
+    }
+
+    .final-matchup {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .final-card {
+        width: 100%;
+        max-width: none;
+    }
+
+    .final-team {
+        font-size: 1.4rem;
     }
 
     .leader-team {

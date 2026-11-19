@@ -34,6 +34,12 @@ const sessions = [
         lichessScores: { "B-Troop": 21, "HK-Troop": 36, "K-Troop": 42, "SHQ": 5 },
         // Optional: points taken off a troop's score for this session
         penalties: { "K-Troop": 5 }
+    },
+
+    {
+        name: "Session - 5",
+        multiplier: 1,
+        lichessScores: { "B-Troop": 12, "HK-Troop": 20, "K-Troop": 22, "SHQ": 4 }
     }
 ];
 
@@ -58,6 +64,11 @@ function hasLichessScores(session) {
     return departments.some(function (dept) {
         return session.lichessScores[dept] !== 0;
     });
+}
+
+// True once every session has real scores (the final standings are known)
+function isTournamentComplete() {
+    return sessions.filter(hasLichessScores).length >= TOTAL_SESSIONS;
 }
 
 // Points for each finishing position: 1st gets 4, 2nd gets 3 and so on
@@ -209,6 +220,41 @@ function showScoreboard() {
     document.getElementById("sessionStatus").textContent =
         "After " + played + " of " + TOTAL_SESSIONS + " sessions • Top 2 reach the final";
 
+    // When all sessions are done, swap the leader box for the Finalists banner
+    const complete = isTournamentComplete();
+    const banner = document.getElementById("finalBanner");
+    document.querySelector(".leader-box").style.display = complete ? "none" : "";
+    banner.style.display = complete ? "block" : "none";
+
+    if (complete) {
+        const first = ranking[0];
+        const second = ranking[1];
+
+        banner.innerHTML = `
+            <div class="final-kicker">★ Finalists ★</div>
+            <div class="final-sub">The Final • 20 Nov 2026 • Deurali Club</div>
+            <div class="final-matchup">
+                <div class="final-card gold">
+                    <span class="final-place">1st</span>
+                    <span class="final-team" style="color: ${departmentColors[first.name]}">${first.name}</span>
+                    <span class="final-pts">${first.points} pts</span>
+                </div>
+                <div class="final-vs">VS</div>
+                <div class="final-card silver">
+                    <span class="final-place">2nd</span>
+                    <span class="final-team" style="color: ${departmentColors[second.name]}">${second.name}</span>
+                    <span class="final-pts">${second.points} pts</span>
+                </div>
+            </div>
+            <div class="final-others">
+                3rd: <strong style="color: ${departmentColors[ranking[2].name]}">${ranking[2].name}</strong>
+                &nbsp;•&nbsp;
+                4th: <strong style="color: ${departmentColors[ranking[3].name]}">${ranking[3].name}</strong>
+            </div>
+            <div class="final-status">All ${TOTAL_SESSIONS} sessions complete</div>
+        `;
+    }
+
     // Table: clear it, then add one row per department
     const tableBody = document.getElementById("scoreTableBody");
     tableBody.innerHTML = "";
@@ -216,12 +262,17 @@ function showScoreboard() {
     ranking.forEach(function (team, index) {
         const row = document.createElement("tr");
 
-        if (index === 0) {
+        // Final standings: gold and silver rows for the two finalists only
+        let rankCell = index + 1;
+        if (complete && index < 2) {
+            row.classList.add(index === 0 ? "gold-row" : "silver-row");
+            rankCell = '<span class="rank-medal ' + (index === 0 ? "gold" : "silver") + '">' + (index + 1) + "</span>";
+        } else if (index === 0) {
             row.classList.add("first-place");
         }
 
         row.innerHTML = `
-            <td>${index + 1}</td>
+            <td>${rankCell}</td>
             <td>${team.name}</td>
             <td>${team.points}</td>
             <td>${team.lichess}${team.penalty > 0 ? ' <span class="penalty-note">(−' + team.penalty + ' penalty)</span>' : ""}</td>
@@ -418,8 +469,14 @@ function getTeamPlayers(teamName) {
 
 // Fill each team box with its top 5 players
 function fillTeamBoxes() {
+    // The two finalists get a soft gold glow once the tournament is complete
+    const finalists = isTournamentComplete()
+        ? getRanking().slice(0, 2).map(function (team) { return team.name; })
+        : [];
+
     document.querySelectorAll(".team-box").forEach(function (box) {
         const teamName = box.dataset.team;
+        box.classList.toggle("finalist-box", finalists.includes(teamName));
         const list = box.querySelector(".mini-list");
         const teamPlayers = getTeamPlayers(teamName);
 
