@@ -2,11 +2,9 @@
    CHESS CHAMPIONSHIP SCOREBOARD - STYLES
 
    THEME: change the colours in ONE place, the :root block below.
-   To try another theme, swap in one of the alternative blocks
-   from the bottom of this file.
    ========================================================= */
 
-/* ===== THEME COLOURS: Classic Wood (default) ===== */
+/* ===== THEME COLOURS: Midnight Marble ===== */
 
 :root {
     --bg-page:    #101010;
@@ -19,9 +17,11 @@
     --text-muted: #a8a398;
     --accent:     #e3c565;
     --accent-2:   #8a6d1d;
-    --highlight:  rgba(212, 175, 55, 0.14);
     --hover:      rgba(255, 255, 255, 0.05);
     --badge-text: #101010;
+    --gold:       #e3c565;
+    --silver:     #cfd3da;
+    --bronze:     #cd8b57;
 }
 
 /* ===== FONTS (stored in the fonts folder, so no internet is needed) ===== */
@@ -66,7 +66,7 @@ body {
     background-size: 90px 90px;
 }
 
-h1, h2, h3, .leader-team {
+h1, h2, h3 {
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
@@ -154,68 +154,276 @@ h1, h2, h3, .leader-team {
     font-size: 1rem;
 }
 
-/* ===== LEADER BOX ===== */
+/* =========================================================
+   CHAMPION HERO
+   ========================================================= */
 
-.leader-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
+.champion-hero {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 40px 24px 34px;
+    margin-bottom: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(227, 197, 101, 0.6);
+    background:
+        radial-gradient(ellipse at 50% -10%, var(--champ-glow, rgba(227, 197, 101, 0.3)), transparent 65%),
+        radial-gradient(ellipse at 50% 120%, rgba(227, 197, 101, 0.14), transparent 60%),
+        var(--bg-panel);
+    box-shadow: 0 0 40px rgba(227, 197, 101, 0.18), inset 0 0 60px rgba(227, 197, 101, 0.05);
+}
+
+/* Everything except the confetti sits above it */
+.champion-hero > *:not(.confetti) {
+    position: relative;
+    z-index: 1;
+}
+
+.champ-kicker {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.1rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.champ-trophy {
+    font-size: 4.2rem;
+    line-height: 1.1;
+    margin: 8px 0 2px;
+    filter: drop-shadow(0 0 18px rgba(227, 197, 101, 0.55));
+    animation: float-trophy 3.5s ease-in-out infinite;
+}
+
+.champ-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #e3c565, #fff6d6, #e3c565, #fff6d6, #e3c565);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold);
+    animation: shimmer 6s linear infinite;
+}
+
+.champ-sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    margin-top: 6px;
+}
+
+.champ-result {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 22px;
+    border-radius: 999px;
+    border: 1px solid var(--gold);
+    background: rgba(227, 197, 101, 0.1);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.champ-players {
+    margin-top: 12px;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.champ-meta {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Gold confetti falling behind the text */
+.confetti {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.confetti span {
+    position: absolute;
+    top: -16px;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0;
+    animation: confetti-fall linear infinite;
+}
+
+@keyframes confetti-fall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.9; }
+    100% { transform: translateY(480px) rotate(540deg); opacity: 0; }
+}
+
+@keyframes shimmer {
+    from { background-position: 0% 0; }
+    to   { background-position: -300% 0; }
+}
+
+@keyframes float-trophy {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
+
+/* Respect people who turn animations off */
+@media (prefers-reduced-motion: reduce) {
+    .confetti { display: none; }
+    .champ-trophy, .champ-name { animation: none; }
+}
+
+/* =========================================================
+   PODIUM
+   ========================================================= */
+
+.podium-card {
     background: var(--bg-panel);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 20px 24px;
+    padding: 22px 20px 18px;
     margin-bottom: 24px;
 }
 
-.leader-main {
+.section-title,
+.chart-card h2,
+.results-card h2 {
+    color: var(--text);
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+
+.podium {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.podium-col {
+    flex: 1;
+    max-width: 230px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
     align-items: center;
     text-align: center;
 }
 
-.leader-label {
+.podium-label {
     color: var(--text-muted);
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: bold;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
-.leader-team {
-    font-size: 1.9rem;
+.podium-col.first .podium-label {
+    color: var(--gold);
+}
+
+.podium-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-top: 2px;
+}
+
+.podium-col.first .podium-name {
+    font-size: 1.6rem;
+}
+
+.podium-pts {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.podium-step {
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-radius: 10px 10px 0 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #101010;
+}
+
+.podium-col.first .podium-step {
+    height: 120px;
+    background: linear-gradient(#f4dc8a, #c9a43f);
+    box-shadow: 0 0 24px rgba(227, 197, 101, 0.3);
+}
+
+.podium-col.second .podium-step {
+    height: 88px;
+    background: linear-gradient(#e6e9ee, #a9aeb8);
+}
+
+.podium-col.third .podium-step {
+    height: 64px;
+    background: linear-gradient(#e0a470, #9c6232);
+}
+
+.podium-fourth {
+    margin-top: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.podium-fourth span {
+    font-size: 0.8rem;
+}
+
+/* ===== HOW IT WORKED (collapsed by default) ===== */
+
+.how-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+}
+
+.how-box summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.1rem;
     font-weight: bold;
     color: var(--accent);
 }
 
-.leader-lead {
+.how-box summary::-webkit-details-marker {
+    display: none;
+}
+
+.how-box summary::before {
+    content: "▸ ";
+}
+
+.how-box[open] summary::before {
+    content: "▾ ";
+}
+
+.how-box ol {
+    margin-top: 12px;
+    padding-left: 20px;
     color: var(--text-muted);
     font-size: 0.95rem;
+    line-height: 1.7;
 }
 
-.session-progress {
-    min-width: 220px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    text-align: right;
-}
-
-.progress-track {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 0;
-    background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    border-radius: 999px;
-    transition: width 1s ease-out;
+.how-box strong {
+    color: var(--text);
 }
 
 /* ===== CHART ===== */
@@ -229,8 +437,6 @@ h1, h2, h3, .leader-team {
 }
 
 .chart-card h2 {
-    color: var(--text);
-    font-size: 1.2rem;
     margin-bottom: 16px;
 }
 
@@ -239,7 +445,7 @@ h1, h2, h3, .leader-team {
     max-height: 350px;
 }
 
-/* ===== TABLE ===== */
+/* ===== TABLES ===== */
 
 .scoreboard-table-wrap {
     overflow-x: auto;
@@ -276,34 +482,30 @@ h1, h2, h3, .leader-team {
     background: var(--hover);
 }
 
-/* The rank number (#1, #2 ...) */
+/* The rank number */
 .scoreboard-table tbody td:first-child {
     font-weight: bold;
     color: var(--accent);
 }
 
-/* ===== HIGHLIGHTS ===== */
-
-.first-place {
-    background: var(--highlight);
+/* Qualifying table: the champion and the runner-up */
+.scoreboard-table tbody tr.champ-row {
+    background: linear-gradient(90deg, rgba(227, 197, 101, 0.16), transparent);
+    box-shadow: inset 3px 0 0 var(--gold);
 }
 
-.finalist {
-    border-left: 3px solid var(--accent-2);
+.scoreboard-table tbody tr.runner-row {
+    background: linear-gradient(90deg, rgba(207, 211, 218, 0.10), transparent);
+    box-shadow: inset 3px 0 0 var(--silver);
 }
 
-.finalist-badge {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: var(--badge-text);
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+.table-note {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 10px 4px 24px;
 }
 
-/* ===== MINI LIST ===== */
+/* ===== TEAM BOXES ===== */
 
 .team-box-header {
     display: flex;
@@ -320,6 +522,33 @@ h1, h2, h3, .leader-team {
     font-size: 0.9rem;
     text-align: right;
     margin-left: 10px;
+}
+
+.box-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.box-tag.gold {
+    color: var(--badge-text);
+    background: linear-gradient(90deg, var(--gold), var(--accent-2));
+}
+
+.box-tag.silver {
+    color: var(--silver);
+    border: 1px solid var(--silver);
+}
+
+.team-box.champion-box {
+    box-shadow: 0 0 0 1px rgba(227, 197, 101, 0.65), 0 0 28px rgba(227, 197, 101, 0.22);
+}
+
+.team-box.runnerup-box {
+    box-shadow: 0 0 0 1px rgba(207, 211, 218, 0.35);
 }
 
 .mini-list {
@@ -373,59 +602,7 @@ h1, h2, h3, .leader-team {
     font-size: 1.15rem;
 }
 
-
-
-
-
-/* ===== HOW IT WORKS BOX ===== */
-
-.how-box {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 22px;
-    margin-bottom: 24px;
-}
-
-.how-box h2 {
-    color: var(--accent);
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-}
-
-.how-box ol {
-    padding-left: 20px;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.7;
-}
-
-.how-box strong {
-    color: var(--text);
-}
-
-/* ===== SESSION STATUS / NOTES ===== */
-
-.leader-status {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-}
-
-.table-note {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin: 10px 4px 24px;
-}
-
 /* ===== SESSION RESULTS ===== */
-
-.results-card h2 {
-    color: var(--text);
-    font-size: 1.2rem;
-    margin-bottom: 14px;
-}
 
 .result-team {
     display: block;
@@ -450,137 +627,15 @@ h1, h2, h3, .leader-team {
     background: var(--accent);
 }
 
-/* ===== FINALISTS (shown when all sessions are complete) ===== */
-
-:root {
-    --gold:   #e3c565;
-    --silver: #cfd3da;
-}
-
-.final-banner {
-    text-align: center;
-    padding: 22px 20px;
-    margin-bottom: 24px;
-    border-radius: 14px;
-    border: 1px solid rgba(227, 197, 101, 0.55);
-    background:
-        radial-gradient(ellipse at top, rgba(227, 197, 101, 0.16), transparent 70%),
-        var(--bg-panel);
-    box-shadow: 0 0 30px rgba(227, 197, 101, 0.12);
-}
-
-.final-kicker {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.1rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-}
-
-.final-sub {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin: 4px 0 18px;
-}
-
-.final-matchup {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    gap: 16px;
-}
-
-.final-card {
-    flex: 1;
-    max-width: 280px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-}
-
-.final-card.gold   { border-color: var(--gold);   box-shadow: 0 0 18px rgba(227, 197, 101, 0.22); }
-.final-card.silver { border-color: var(--silver); box-shadow: 0 0 14px rgba(207, 211, 218, 0.14); }
-
-.final-place {
-    font-size: 0.8rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.final-card.gold   .final-place { color: var(--gold); }
-.final-card.silver .final-place { color: var(--silver); }
-
-.final-team {
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.7rem;
-    font-weight: bold;
-}
-
-.final-pts {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
-
-.final-vs {
-    align-self: center;
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.1rem;
-    color: var(--text-muted);
-}
-
-.final-others {
-    margin-top: 16px;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-.final-status {
-    margin-top: 6px;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-}
-
-/* Table: gold and silver rows for the two finalists */
-.gold-row {
-    background: linear-gradient(90deg, rgba(227, 197, 101, 0.16), transparent);
-    box-shadow: inset 3px 0 0 var(--gold);
-}
-
-.silver-row {
-    background: linear-gradient(90deg, rgba(207, 211, 218, 0.10), transparent);
-    box-shadow: inset 3px 0 0 var(--silver);
-}
-
-.rank-medal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    color: #101010;
-}
-
-.rank-medal.gold   { background: var(--gold); }
-.rank-medal.silver { background: var(--silver); }
-
-/* Team boxes of the two finalists: a soft gold glow */
-.team-box.finalist-box {
-    box-shadow: 0 0 0 1px rgba(227, 197, 101, 0.45), 0 0 22px rgba(227, 197, 101, 0.14);
-}
-
 /* Quiet note for penalties: small, muted, not highlighted */
 .penalty-note {
     color: var(--text-muted);
     font-size: 0.75rem;
     font-weight: normal;
+    white-space: nowrap;
+}
+
+.team-name {
     white-space: nowrap;
 }
 
@@ -600,27 +655,17 @@ h1, h2, h3, .leader-team {
         height: 52px;
     }
 
-    .leader-box {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
-
     .page-layout {
         grid-template-columns: minmax(0, 1fr);
     }
+
     .team-column {
         grid-template-columns: 1fr 1fr;
     }
+
     .scoreboard-wrapper {
         order: -1;
     }
-}
-
-/* ===== PHONES AND SMALL TABLETS ===== */
-
-.team-name {
-    white-space: nowrap;
 }
 
 @media (max-width: 700px) {
@@ -660,32 +705,51 @@ h1, h2, h3, .leader-team {
         font-size: 0.85rem;
     }
 
-    .leader-box {
-        padding: 14px 12px;
+    .champion-hero {
+        padding: 28px 14px 26px;
     }
 
-    .final-banner {
-        padding: 18px 12px;
+    .champ-kicker {
+        font-size: 0.9rem;
+        letter-spacing: 3px;
     }
 
-    .final-matchup {
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
+    .champ-trophy {
+        font-size: 3.2rem;
     }
 
-    .final-card {
-        width: 100%;
-        max-width: none;
+    .champ-name {
+        font-size: 2.6rem;
     }
 
-    .final-team {
-        font-size: 1.4rem;
+    .champ-result {
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 
-    .leader-team {
-        font-size: 1.5rem;
+    .podium-card {
+        padding: 18px 12px 14px;
     }
+
+    .podium {
+        gap: 6px;
+    }
+
+    .podium-name {
+        font-size: 1rem;
+    }
+
+    .podium-col.first .podium-name {
+        font-size: 1.15rem;
+    }
+
+    .podium-pts {
+        font-size: 0.7rem;
+    }
+
+    .podium-col.first .podium-step  { height: 100px; }
+    .podium-col.second .podium-step { height: 74px; }
+    .podium-col.third .podium-step  { height: 54px; }
 
     .how-box {
         padding: 14px 16px;
@@ -720,13 +784,6 @@ h1, h2, h3, .leader-team {
     /* The session results table is wide, so it scrolls sideways */
     .results-card .scoreboard-table {
         min-width: 560px;
-    }
-
-    .finalist-badge {
-        display: block;
-        width: fit-content;
-        margin: 4px 0 0;
-        font-size: 0.65rem;
     }
 
     .team-box {

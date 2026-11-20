@@ -1,8 +1,19 @@
 // The Four Departments
-const departments = ["B-Troop", "HK-Troop", "K-Troop", "SHQ"]
+const departments = ["B-Troop", "HK-Troop", "K-Troop", "SHQ"];
 const TOTAL_SESSIONS = 5;
 
-// Results of each session. "placements" lists departments from 1st to last.
+// ===== THE FINAL =====
+// Fill this in once the final has been played.
+// "players" is optional: put the two players' names to show who played the final.
+const FINAL = {
+    champion: "K-Troop",
+    runnerUp: "HK-Troop",
+    date: "20 November 2026",
+    venue: "Deurali Club",
+    players: { "K-Troop": "", "HK-Troop": "" }
+};
+
+// Results of each session.
 const sessions = [
     {
         name: "Start",
@@ -66,7 +77,7 @@ function hasLichessScores(session) {
     });
 }
 
-// True once every session has real scores (the final standings are known)
+// True once every session has real scores
 function isTournamentComplete() {
     return sessions.filter(hasLichessScores).length >= TOTAL_SESSIONS;
 }
@@ -81,6 +92,17 @@ const departmentColors = {
     "K-Troop": "#8b5cf6",
     "SHQ": "#10b981"
 };
+
+// "HK-Troop" -> "HK Troop"
+function niceName(name) {
+    return name.replace("-Troop", " Troop");
+}
+
+// "#8b5cf6" -> "rgba(139, 92, 246, 0.3)"
+function hexToRgba(hex, alpha) {
+    const n = parseInt(hex.slice(1), 16);
+    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + alpha + ")";
+}
 
 // Work out the points each troop earns in ONE session (tied troops share the points)
 function getSessionPoints(session) {
@@ -133,23 +155,20 @@ function addSessionPoints(session, totals) {
 
 // Add up every session's points for every department
 function calculateTotals() {
-    const totals={};
+    const totals = {};
 
-    // Start every deparment on 0 points
-    departments.forEach(function (dept){
+    departments.forEach(function (dept) {
         totals[dept] = 0;
     });
 
-    // Go through each session, then each placement inside it
     sessions.forEach(function (session) {
         addSessionPoints(session, totals);
     });
 
-    return totals
+    return totals;
 }
 
-
-// Turn the totals into a sorted list: highest points first
+// Turn the totals into a sorted list: highest points first (qualifying standings)
 function getRanking() {
     const totals = calculateTotals();
 
@@ -189,91 +208,114 @@ function getRanking() {
     return ranking;
 }
 
-// Draw the leader box and the table on the page
+// Final order: champion, runner-up, then 3rd and 4th from the qualifying standings
+function getFinalOrder() {
+    const ranking = getRanking();
+    const champion = ranking.find(function (t) { return t.name === FINAL.champion; });
+    const runnerUp = ranking.find(function (t) { return t.name === FINAL.runnerUp; });
+    const rest = ranking.filter(function (t) {
+        return t.name !== FINAL.champion && t.name !== FINAL.runnerUp;
+    });
+    return [champion, runnerUp].concat(rest);
+}
+
+// ===== CHAMPION HERO =====
+function showChampions() {
+    const hero = document.getElementById("championHero");
+
+    if (!isTournamentComplete() || !FINAL.champion) {
+        hero.style.display = "none";
+        return;
+    }
+
+    const color = departmentColors[FINAL.champion];
+    hero.style.setProperty("--champ-glow", hexToRgba(color, 0.32));
+
+    // A little gold confetti falling behind the text
+    const confettiColors = ["#e3c565", "#f4f1ea", color, "#e3c565"];
+    let confetti = "";
+    for (let i = 0; i < 28; i++) {
+        const left = (i * 37) % 100;
+        const delay = ((i * 0.53) % 6).toFixed(2);
+        const duration = (5 + ((i * 0.7) % 4)).toFixed(1);
+        confetti += '<span style="left:' + left + '%;animation-delay:' + delay + 's;animation-duration:' +
+            duration + 's;background:' + confettiColors[i % 4] + '"></span>';
+    }
+
+    // Optional line naming the two players
+    const champPlayer = FINAL.players && FINAL.players[FINAL.champion];
+    const runnerPlayer = FINAL.players && FINAL.players[FINAL.runnerUp];
+    const playerLine = (champPlayer && runnerPlayer)
+        ? '<div class="champ-players">' + champPlayer + " beat " + runnerPlayer + "</div>"
+        : "";
+
+    hero.innerHTML = `
+        <div class="confetti">${confetti}</div>
+        <div class="champ-kicker">★ Champions ★</div>
+        <div class="champ-trophy">🏆</div>
+        <div class="champ-name">${niceName(FINAL.champion)}</div>
+        <div class="champ-sub">247 SQN - OC's Chess Championship 2026</div>
+        <div class="champ-result">Won the final against ${niceName(FINAL.runnerUp)}</div>
+        ${playerLine}
+        <div class="champ-meta">${FINAL.date} • ${FINAL.venue}</div>
+    `;
+}
+
+// ===== PODIUM =====
+function showPodium() {
+    const box = document.getElementById("podium");
+
+    if (!isTournamentComplete() || !FINAL.champion) {
+        box.style.display = "none";
+        return;
+    }
+
+    const order = getFinalOrder();
+
+    function column(team, cls, label, step) {
+        return `
+            <div class="podium-col ${cls}">
+                <span class="podium-label">${label}</span>
+                <span class="podium-name" style="color: ${departmentColors[team.name]}">${niceName(team.name)}</span>
+                <span class="podium-pts">${team.points} qualifying pts</span>
+                <div class="podium-step">${step}</div>
+            </div>`;
+    }
+
+    box.innerHTML = `
+        <h2 class="section-title">Final Standings</h2>
+        <div class="podium">
+            ${column(order[1], "second", "Runner-up", 2)}
+            ${column(order[0], "first", "🏆 Champions", 1)}
+            ${column(order[2], "third", "3rd place", 3)}
+        </div>
+        <div class="podium-fourth">4th place: <strong style="color: ${departmentColors[order[3].name]}">${niceName(order[3].name)}</strong>
+            <span>(${order[3].points} qualifying pts)</span></div>
+    `;
+}
+
+// ===== QUALIFYING TABLE =====
 function showScoreboard() {
     const ranking = getRanking();
-
-    // How many sessions have real scores?
-    const played = sessions.filter(hasLichessScores).length;
-    const leaderBox = document.getElementById("leaderTeam");
-
-    if (played === 0) {
-        leaderBox.textContent = "No results yet";
-        leaderBox.style.color = "";
-        document.getElementById("leaderLead").textContent = "";
-    } else {
-        // Leader box: the first item in the sorted list
-        leaderBox.textContent = ranking[0].name;
-        leaderBox.style.color = departmentColors[ranking[0].name];
-
-        // How far ahead of 2nd place?
-        const gap = ranking[0].points - ranking[1].points;
-        let leadText = ranking[0].points + " pts • ";
-        if (gap > 0) {
-            leadText += "leads " + ranking[1].name + " by " + gap + (gap === 1 ? " pt" : " pts");
-        } else {
-            leadText += "level on points with " + ranking[1].name;
-        }
-        document.getElementById("leaderLead").textContent = leadText;
-    }
-
-    document.getElementById("sessionStatus").textContent =
-        "After " + played + " of " + TOTAL_SESSIONS + " sessions • Top 2 reach the final";
-
-    // When all sessions are done, swap the leader box for the Finalists banner
     const complete = isTournamentComplete();
-    const banner = document.getElementById("finalBanner");
-    document.querySelector(".leader-box").style.display = complete ? "none" : "";
-    banner.style.display = complete ? "block" : "none";
 
-    if (complete) {
-        const first = ranking[0];
-        const second = ranking[1];
-
-        banner.innerHTML = `
-            <div class="final-kicker">★ Finalists ★</div>
-            <div class="final-sub">The Final • 20 Nov 2026 • Deurali Club</div>
-            <div class="final-matchup">
-                <div class="final-card gold">
-                    <span class="final-place">1st</span>
-                    <span class="final-team" style="color: ${departmentColors[first.name]}">${first.name}</span>
-                    <span class="final-pts">${first.points} pts</span>
-                </div>
-                <div class="final-vs">VS</div>
-                <div class="final-card silver">
-                    <span class="final-place">2nd</span>
-                    <span class="final-team" style="color: ${departmentColors[second.name]}">${second.name}</span>
-                    <span class="final-pts">${second.points} pts</span>
-                </div>
-            </div>
-            <div class="final-others">
-                3rd: <strong style="color: ${departmentColors[ranking[2].name]}">${ranking[2].name}</strong>
-                &nbsp;•&nbsp;
-                4th: <strong style="color: ${departmentColors[ranking[3].name]}">${ranking[3].name}</strong>
-            </div>
-            <div class="final-status">All ${TOTAL_SESSIONS} sessions complete</div>
-        `;
-    }
-
-    // Table: clear it, then add one row per department
     const tableBody = document.getElementById("scoreTableBody");
     tableBody.innerHTML = "";
 
     ranking.forEach(function (team, index) {
         const row = document.createElement("tr");
 
-        // Final standings: gold and silver rows for the two finalists only
-        let rankCell = index + 1;
-        if (complete && index < 2) {
-            row.classList.add(index === 0 ? "gold-row" : "silver-row");
-            rankCell = '<span class="rank-medal ' + (index === 0 ? "gold" : "silver") + '">' + (index + 1) + "</span>";
-        } else if (index === 0) {
-            row.classList.add("first-place");
+        let trophy = "";
+        if (complete && team.name === FINAL.champion) {
+            row.classList.add("champ-row");
+            trophy = " 🏆";
+        } else if (complete && team.name === FINAL.runnerUp) {
+            row.classList.add("runner-row");
         }
 
         row.innerHTML = `
-            <td>${rankCell}</td>
-            <td>${team.name}</td>
+            <td>${index + 1}</td>
+            <td>${team.name}${trophy}</td>
             <td>${team.points}</td>
             <td>${team.lichess}${team.penalty > 0 ? ' <span class="penalty-note">(−' + team.penalty + ' penalty)</span>' : ""}</td>
         `;
@@ -281,12 +323,10 @@ function showScoreboard() {
         teamNameCell.classList.add("team-name");
         teamNameCell.style.color = departmentColors[team.name];
         teamNameCell.style.fontWeight = "bold";
-        
+
         tableBody.appendChild(row);
     });
 }
-
-showScoreboard();
 
 // Session Results grid: one row per played session, latest first
 function showSessionResults() {
@@ -334,8 +374,6 @@ function showSessionResults() {
     });
 }
 
-showSessionResults();
-
 // Work out everyone's total after each session
 function getHistory() {
     const running = {};
@@ -354,7 +392,6 @@ function getHistory() {
     });
 
     return history;
-
 }
 
 function drawChart() {
@@ -371,13 +408,15 @@ function drawChart() {
                 return session.name;
             }),
             datasets: departments.map(function (dept) {
+                // The champion's line is a little thicker
+                const isChampion = dept === FINAL.champion;
                 return {
                     label: dept,
                     data: history.map(function (snapshot) {
                         return snapshot[dept];
                     }),
                     borderColor: departmentColors[dept],
-                    borderWidth: 4,
+                    borderWidth: isChampion ? 5 : 3,
                     tension: 0.35,
                     pointRadius: 6,
                     pointHoverRadius: 9,
@@ -437,8 +476,6 @@ function drawChart() {
     });
 }
 
-drawChart();
-
 // Add up one player's scores across all sessions
 function sumOf(list) {
     return list.reduce(function (sum, n) {
@@ -467,18 +504,30 @@ function getTeamPlayers(teamName) {
         });
 }
 
-// Fill each team box with its top 5 players
+// Fill each team box with its players
 function fillTeamBoxes() {
-    // The two finalists get a soft gold glow once the tournament is complete
-    const finalists = isTournamentComplete()
-        ? getRanking().slice(0, 2).map(function (team) { return team.name; })
-        : [];
+    const complete = isTournamentComplete() && FINAL.champion;
 
     document.querySelectorAll(".team-box").forEach(function (box) {
         const teamName = box.dataset.team;
-        box.classList.toggle("finalist-box", finalists.includes(teamName));
         const list = box.querySelector(".mini-list");
         const teamPlayers = getTeamPlayers(teamName);
+
+        // Champion and runner-up get a glow and a small tag
+        box.classList.toggle("champion-box", complete && teamName === FINAL.champion);
+        box.classList.toggle("runnerup-box", complete && teamName === FINAL.runnerUp);
+
+        const oldTag = box.querySelector(".box-tag");
+        if (oldTag) {
+            oldTag.remove();
+        }
+        if (complete && (teamName === FINAL.champion || teamName === FINAL.runnerUp)) {
+            const tag = document.createElement("span");
+            const isChampion = teamName === FINAL.champion;
+            tag.className = "box-tag " + (isChampion ? "gold" : "silver");
+            tag.textContent = isChampion ? "🏆 Champions" : "Runner-up";
+            box.querySelector(".team-box-header").after(tag);
+        }
 
         // The team total goes in the header
         const teamTotal = teamPlayers.reduce(function (sum, player) {
@@ -516,4 +565,10 @@ function fillTeamBoxes() {
     });
 }
 
+// Draw everything on the page
+showChampions();
+showPodium();
+showScoreboard();
+showSessionResults();
 fillTeamBoxes();
+drawChart();

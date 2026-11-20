@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Championship Scoreboard</title>
+    <title>Chess Championship - Final Results</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
                 </div>
                 <ol class="mini-list"></ol>
             </div>
-            
+
             <div class="team-box" data-team="B-Troop" style="--team-color: #22d3ee;">
                 <div class="team-box-header">
                     <h3>B Troop</h3>
@@ -37,45 +37,31 @@
                         <h1>247 SQN - OC's Chess Championship 2026</h1>
                         <img class="scoreboard-logo" src="Images/iu.PNG" alt="IU crest">
                     </div>
-                    <p class="scoreboard-subtitle">Inter-Department Challenge • Live Standings</p>
+                    <p class="scoreboard-subtitle">Inter-Department Challenge • Final Results</p>
                 </div>
 
-                <!-- Shown by script.js once all sessions are complete -->
-                <div id="finalBanner" class="final-banner" style="display: none;"></div>
+                <!-- Filled in by script.js from the FINAL settings -->
+                <section id="championHero" class="champion-hero"></section>
+                <section id="podium" class="podium-card"></section>
 
-                <div class="leader-box">
-                    <div class="leader-main">
-                        <span class="leader-label">Current Leader</span>
-                        <span id="leaderTeam" class="leader-team">--</span>
-                        <span id="leaderLead" class="leader-lead"></span>
-                        <span id="sessionStatus" class="leader-status"></span>
-                    </div>
-
-                    <!-- <div class="session-progress">
-                        <span id="sessionText" class="leader-label"></span>
-                        <div class="progress-track">
-                            <div id="progressFill" class="progress-fill"></div>
-                        </div>
-                    </div> -->
-                </div>
-
-
-                <div class="how-box">
-                    <h2>How scoring works</h2>
+                <details class="how-box">
+                    <summary>How the tournament worked</summary>
                     <ol>
-                        <li>In every session, the four troops are ranked by their <strong>team Lichess score</strong>.</li>
-                        <li>That ranking gives <strong>points</strong>: 1st = 4, 2nd = 3, 3rd = 2, 4th = 1. The Power Hour counts double.</li>
-                        <li>If troops tie in a session, they <strong>share</strong> the points (for example 2.5 each).</li>
-                        <li>The <strong>Points</strong> column decides the standings. Total Lichess score only breaks ties.</li>
-                        <li>The <strong>top 2 troops</strong> after the last session reach the final.</li>
+                        <li>In every session, the four troops were ranked by their <strong>team Lichess score</strong>.</li>
+                        <li>That ranking gave <strong>points</strong>: 1st = 4, 2nd = 3, 3rd = 2, 4th = 1.</li>
+                        <li>If troops tied in a session, they <strong>shared</strong> the points (for example 2.5 each).</li>
+                        <li>The <strong>Points</strong> column decided the standings. Total Lichess score only broke ties.</li>
+                        <li>The <strong>top 2 troops</strong> after the last session reached the final.</li>
+                        <li>The final was <strong>one game</strong> on a physical board. The winner's troop became champion.</li>
                     </ol>
-                </div>
+                </details>
 
                 <div class="chart-card">
-                    <h2>Score Progress</h2>
+                    <h2>Road to the Final</h2>
                     <canvas id="scoreChart"></canvas>
                 </div>
 
+                <h2 class="section-title">Qualifying Standings</h2>
                 <div class="scoreboard-table-wrap">
                     <table class="scoreboard-table">
                         <thead>
@@ -88,51 +74,51 @@
                         </thead>
                         <tbody id="scoreTableBody"></tbody>
                     </table>
-            </div>
-
-            <p class="table-note">Points decide the rank. Total Lichess score is only used if points are level.</p>
-
-            <div class="results-card">
-                <h2>Session Results</h2>
-                <div class="scoreboard-table-wrap">
-                    <table class="scoreboard-table">
-                        <thead>
-                            <tr>
-                                <th>Session</th>
-                                <th>1st</th>
-                                <th>2nd</th>
-                                <th>3rd</th>
-                                <th>4th</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sessionResultsBody"></tbody>
-                    </table>
                 </div>
+
+                <p class="table-note">After five sessions. The top 2 reached the final. Points decide the rank; total Lichess score only breaks ties.</p>
+
+                <div class="results-card">
+                    <h2 class="section-title">Session Results</h2>
+                    <div class="scoreboard-table-wrap">
+                        <table class="scoreboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Session</th>
+                                    <th>1st</th>
+                                    <th>2nd</th>
+                                    <th>3rd</th>
+                                    <th>4th</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessionResultsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
-
         </div>
-    </div>
 
-    <aside class="team-column">
+        <aside class="team-column">
             <!-- K and SHQ Troop boxes -->
-        <div class="team-box" data-team="K-Troop" style="--team-color: #8b5cf6;">
-            <div class="team-box-header">
-                <h3>K Troop</h3>
-                <span class="team-total"></span>
+            <div class="team-box" data-team="K-Troop" style="--team-color: #8b5cf6;">
+                <div class="team-box-header">
+                    <h3>K Troop</h3>
+                    <span class="team-total"></span>
+                </div>
+                <ol class="mini-list"></ol>
             </div>
-            <ol class="mini-list"></ol>
-        </div>
-        
-        <div class="team-box" data-team="SHQ" style="--team-color: #10b981;">
-            <div class="team-box-header">
-                <h3>SHQ</h3>
-                <span class="team-total"></span>
-            </div>  
-            <ol class="mini-list"></ol>
-        </div>
-    </aside>
 
+            <div class="team-box" data-team="SHQ" style="--team-color: #10b981;">
+                <div class="team-box-header">
+                    <h3>SHQ</h3>
+                    <span class="team-total"></span>
+                </div>
+                <ol class="mini-list"></ol>
+            </div>
+        </aside>
 
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="players.js"></script>
