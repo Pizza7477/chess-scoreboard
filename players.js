@@ -30,11 +30,11 @@ const players = [
     { name: "Chetanpun1",    team: "K-Troop",  scores: [0, 2, 0, 6, 7, 2],     wins: [0, 1, 0, 3, 3, 1], draws: [0, 0, 0, 0, 1, 0], losses: [0, 3, 1, 2, 3, 2] },
     { name: "yubrajj",       team: "K-Troop",  scores: [0, 2, 6, 2, 5, 2],     wins: [0, 1, 3, 1, 2, 1], draws: [0, 0, 0, 0, 1, 0], losses: [0, 1, 3, 4, 4, 2] },
     { name: "Amul1999",      team: "K-Troop",  scores: [0, 0, 12, 12, 10, 8],  wins: [0, 0, 6, 6, 5, 4], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 2, 1, 0] },
+    { name: "Santoindahouse", team: "K-Troop",     scores: [0, 0, 0, 0, 0, 4],     wins: [0, 0, 0, 0, 0, 2], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 0, 0, 1] },
 
     { name: "RamLG",         team: "SHQ",      scores: [0, 0, 0, 4, 1, 0],     wins: [0, 0, 0, 2, 0, 0], draws: [0, 0, 0, 0, 1, 0], losses: [0, 1, 4, 2, 5, 0] },
     { name: "sonihang3624",  team: "SHQ",      scores: [0, 0, 2, 1, 4, 0],     wins: [0, 0, 1, 0, 2, 0], draws: [0, 0, 0, 1, 0, 0], losses: [0, 0, 2, 3, 4, 0] },
     { name: "Binaya12345",   team: "SHQ",      scores: [0, 0, 0, 0, 0, 0],     wins: [0, 0, 0, 0, 0, 0], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 0, 0, 0] },
-    { name: "Dineshghale",   team: "SHQ",      scores: [0, 0, 0, 2, 0, 0],     wins: [0, 0, 0, 1, 0, 0], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 1, 2, 0] },
-    // NEW in Session 5: team not shown in the screenshot, assumed SHQ. Change "SHQ" if wrong.
-    { name: "Santoindahouse", team: "SHQ",     scores: [0, 0, 0, 0, 0, 4],     wins: [0, 0, 0, 0, 0, 2], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 0, 0, 1] }
+    { name: "Dineshghale",   team: "SHQ",      scores: [0, 0, 0, 2, 0, 0],     wins: [0, 0, 0, 1, 0, 0], draws: [0, 0, 0, 0, 0, 0], losses: [0, 0, 0, 1, 2, 0] }
+    
 ];
